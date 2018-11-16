@@ -18,3 +18,8 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::prefix('movie')->group(function () {
+    Route::get('add', 'MovieController@add')->name('movie_add');
+    Route::get('seen', 'MovieController@seen')->name('movie_seen');
+});
