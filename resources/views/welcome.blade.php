@@ -10,12 +10,12 @@
 
             <ul class="links">
                <li>
-                    <a href="{{ route('movie_add') }}">
+                    <a href="{{ route('movies.create') }}">
                         @lang('app.movie_add')
                     </a>
                </li>
                <li>
-                    <a href="{{ route('movie_seen') }}">
+                    <a href="{{ route('movies.index') }}">
                         @lang('app.movie_list_seen')
                     </a>
                </li>

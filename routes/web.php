@@ -19,7 +19,10 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::prefix('movie')->group(function () {
-    Route::get('add', 'MovieController@add')->name('movie_add');
-    Route::get('seen', 'MovieController@seen')->name('movie_seen');
-});
+Route::get('movies', 'MovieController@index')->name('movies.index');
+Route::get('movies/create', 'MovieController@create')->name('movies.create');
+Route::get('movies/{id}', 'MovieController@show')->name('movies.show');
+Route::post('movies', 'MovieController@store')->name('movies.store');
+Route::get('movies/{id}/edit', 'MovieController@edit')->name('movies.edit');
+Route::patch('movies/{id}', 'MovieController@update')->name('movies.update');
+Route::delete('movies/{id}', 'MovieController@destroy')->name('movies.destroy');

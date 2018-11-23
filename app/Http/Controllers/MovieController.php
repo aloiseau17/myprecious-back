@@ -7,22 +7,22 @@ use Illuminate\Http\Request;
 class MovieController extends Controller
 {
     /**
-     * Show the application movie adding page.
-     *
-     * @return void
-     */
-    public function add()
-    {
-    	return view('movie.add');
-    }
-
-    /**
      * Show the movies seen list.
      *
      * @return void
      */
-    public function seen()
+    public function index()
     {
-    	return view('movie.seen');
+        return view('movies.index');
+    }
+
+    /**
+     * Show the application movie adding page.
+     *
+     * @return void
+     */
+    public function create()
+    {
+    	return view('movies.create');
     }
 }
