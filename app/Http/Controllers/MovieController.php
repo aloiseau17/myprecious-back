@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+// Laravel utilities
+use Lang;
+
 // Repository
 use App\Repositories\MovieRepository;
 
@@ -25,7 +28,8 @@ class MovieController extends Controller
      */
     public function index()
     {
-        return view('movies.index');
+        $movies = $this->movies->all();
+        return view('movies.index', compact('movies'));
     }
 
     /**
@@ -47,7 +51,7 @@ class MovieController extends Controller
     public function store(MovieRequest $request)
     {
         $this->movies->create($request->all());
-        return view('movies.index');
+        return redirect()->route('movies.index')->with('status', Lang::get('app.movie_add_success', ['title' => $request->title]));
     }
 
     /**

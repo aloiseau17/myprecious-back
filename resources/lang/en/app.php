@@ -18,6 +18,7 @@ return [
 
     // Movie
     'movie_add' => 'Add a movie',
+    'movie_add_success' => 'Movie ":title" added successfully',
     'movie_director' => 'Director',
     'movie_image' => 'Image',
     'movie_list_seen' => 'Seen movies list',

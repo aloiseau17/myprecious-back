@@ -24,6 +24,12 @@ class MovieRepository implements RepositoryInterface
     public function create(array $data)
     {
         $this->movie->title = $data['title'];
+        $this->movie->director = $data['director'];
+        $this->movie->type = $data['type'];
+        $this->movie->rating = $data['rating'];
+        $this->movie->possession_state = $data['possession_state'];
+        $this->movie->image = $data['image'];
+
         return $this->movie->save();
     }
 

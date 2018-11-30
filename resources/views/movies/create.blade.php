@@ -4,13 +4,13 @@
 <div class="container">
 	
 	<div class="row">
-		<div class="col-xs-12">
+		<div class="col-12">
 			<h1>@lang('app.movie_add')</h1>
 		</div>
 	</div>
 
 	<div class="row">
-		<div class="col-xs-12">
+		<div class="col-12">
 			{!! Form::open([
 				'url' => route('movies.store'),
 				'method' => 'POST',
