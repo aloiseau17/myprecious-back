@@ -5,21 +5,22 @@
 	
 	<div class="row">
 		<div class="col-12">
-			<h1>@lang('app.movie_add')</h1>
+			<h1>@lang('app.movie_edit', ['title' => $movie->title])</h1>
 		</div>
 	</div>
 
+	
 	<div class="row">
 		<div class="col-12">
 			{!! Form::open([
-				'url' => route('movies.store'),
-				'method' => 'POST',
+				'url' => route('movies.update', ['id' => $movie->id]),
+				'method' => 'PATCH',
 			]) !!}
 				
 				{{-- ================= MOVIE TITLE ================= --}}
 				<div class="form-group">
 					{{ Form::label('title', __('app.movie_title')) }}
-					{{ Form::text('title', null, [
+					{{ Form::text('title', $movie->title, [
 						'required',
 						'class' => 'form-control'
 					]) }}
@@ -34,7 +35,7 @@
 				{{-- ================= MOVIE DIRECTOR ================= --}}
 				<div class="form-group">
 					{{ Form::label('director', __('app.movie_director')) }}
-					{{ Form::text('director', null, [
+					{{ Form::text('director', $movie->director, [
 						'class' => 'form-control'
 					]) }}
 
@@ -48,7 +49,7 @@
 				{{-- ================= MOVIE TYPE ================= --}}
 				<div class="form-group">
 					{{ Form::label('type', __('app.movie_type')) }}
-					{{ Form::text('type', null, [
+					{{ Form::text('type', $movie->type, [
 						'class' => 'form-control'
 					]) }}
 
@@ -64,7 +65,7 @@
 					
 					{{-- Do not know --}}
 					<div class="form-check">
-						{{ Form::radio('rating', 'empty', true, [
+						{{ Form::radio('rating', 'empty', !$movie->rating, [
 							'id' => 'ratingDoNotKnow',
 							'class' => 'form-check-input',
 						])}}
@@ -75,7 +76,7 @@
 					
 					{{-- Fantastic --}}
 					<div class="form-check">
-						{{ Form::radio('rating', "fantastic", false, [
+						{{ Form::radio('rating', "fantastic", $movie->rating === 'fantastic', [
 							'id' => 'ratingFantastic',
 							'class' => 'form-check-input',
 						])}}
@@ -86,7 +87,7 @@
 
 					{{-- Bad --}}
 					<div class="form-check">
-						{{ Form::radio('rating', "bad", false, [
+						{{ Form::radio('rating', "bad", $movie->rating === 'bad', [
 							'id' => 'ratingBad',
 							'class' => 'form-check-input',
 						])}}
@@ -107,7 +108,7 @@
 
 					{{-- Default --}}
 					<div class="form-check">
-						{{ Form::radio('possession_state', 'empty', true, [
+						{{ Form::radio('possession_state', 'empty', !$movie->possession_state, [
 							'id' => 'stateDefault',
 							'class' => 'form-check-input',
 						])}}
@@ -118,7 +119,7 @@
 
 					{{-- Own --}}
 					<div class="form-check">
-						{{ Form::radio('possession_state', "own", false, [
+						{{ Form::radio('possession_state', "own", $movie->possession_state === 'own', [
 							'id' => 'stateOwn',
 							'class' => 'form-check-input',
 						])}}
@@ -129,7 +130,7 @@
 
 					{{-- To own --}}
 					<div class="form-check">
-						{{ Form::radio('possession_state', "to_own", false, [
+						{{ Form::radio('possession_state', "to_own", $movie->possession_state === 'to_own', [
 							'id' => 'stateToOwn',
 							'class' => 'form-check-input',
 						])}}
@@ -148,7 +149,7 @@
 				{{-- ================= MOVIE IMAGE ================= --}}
 				<div class="form-group">
 					{{ Form::label('image', __('app.movie_image')) }}
-					{{ Form::text('image', null, [
+					{{ Form::text('image', $movie->image, [
 						'class' => 'form-control'
 					]) }}
 
@@ -170,6 +171,5 @@
 			{!! Form::close() !!}
 		</div>
 	</div>
-
 </div>
 @endsection

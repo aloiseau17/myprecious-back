@@ -21,8 +21,25 @@
 		<div class="col-12">
 			<ul>
 				@foreach($movies as $movie)
-					<li>
+					<li class="mb-2">
 						{{ $movie->title }}
+						
+						{{-- ================= EDIT BUTTON ================= --}}
+						<a href="{{ route('movies.edit', ['id' => $movie->id]) }}" class="d-inline-block btn btn-secondary btn-sm">{{ __('app.edit') }}</a>
+						
+						{{-- ================= DELETE FORM ================= --}}
+						{!! Form::open([
+							'url' => route('movies.destroy', ['id' => $movie->id]),
+							'method' => 'DELETE',
+							'class' => 'd-inline-block',
+						]) !!}
+
+							{{ Form::submit( 'X', [
+								'title' => __('app.delete'),
+								'class' => 'btn btn-danger btn-sm',
+							])}}
+
+						{!! Form::close() !!}
 					</li>
 				@endforeach
 			</ul>

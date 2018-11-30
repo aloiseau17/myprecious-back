@@ -13,13 +13,20 @@ return [
     */
 
     // Form controls
-    'cancel' => 'Annuler',
+    'cancel' => 'Cancel',
+    'delete' => 'Delete',
+    'edit' => 'Edit',
     'save' => 'Save',
 
     // Movie
     'movie_add' => 'Add a movie',
     'movie_add_success' => 'Movie ":title" added successfully',
+    'movie_delete_fail' =>  'Error during remove process of movie ":title"',
+    'movie_delete_success' => 'Movie ":title" deleted successfully',
     'movie_director' => 'Director',
+    'movie_edit' => 'Edit: :title',
+    'movie_edit_fail' => 'Error during update process',
+    'movie_edit_success' => 'Movie updated successfully',
     'movie_image' => 'Image',
     'movie_list_seen' => 'Seen movies list',
     'movie_possession_state' => 'Possession',

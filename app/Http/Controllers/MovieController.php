@@ -50,8 +50,11 @@ class MovieController extends Controller
      */
     public function store(MovieRequest $request)
     {
+
         $this->movies->create($request->all());
+        
         return redirect()->route('movies.index')->with('status', Lang::get('app.movie_add_success', ['title' => $request->title]));
+
     }
 
     /**
@@ -73,7 +76,11 @@ class MovieController extends Controller
      */
     public function edit($id)
     {
-        //
+
+        $movie = $this->movies->getItemById($id);
+
+        return view('movies.edit', compact('movie'));
+
     }
 
     /**
@@ -83,9 +90,15 @@ class MovieController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(MovieRequest $request, $id)
     {
-        //
+        
+        $status = $this->movies->update($request->all(), $id);
+        $movie = $this->movies->getItemById($id);
+        $message = $status ? Lang::get('app.movie_edit_success') : Lang::get('app.movie_edit_fail');
+
+        return redirect()->route('movies.index')->with('status', $message);
+
     }
 
     /**
@@ -96,6 +109,12 @@ class MovieController extends Controller
      */
     public function destroy($id)
     {
-        //
+
+        $movie = $this->movies->getItemById($id);
+        $status = $this->movies->delete($id);
+        $message = $status ? Lang::get('app.movie_delete_success', ['title' => $movie->title]) : Lang::get('app.movie_delete_fail', ['title' => $movie->title]);
+
+        return redirect()->route('movies.index')->with('status', $message);
+
     }
 }

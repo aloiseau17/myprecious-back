@@ -4,6 +4,10 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+// Custom Rules
+use App\Rules\RatingValues;
+use App\Rules\PossessionStateValues;
+
 class MovieRequest extends FormRequest
 {
     /**
@@ -27,8 +31,8 @@ class MovieRequest extends FormRequest
             'title' => 'required|string',
             'director' => 'nullable|string',
             'type' => 'nullable|string',
-            'rating' => 'required|string',
-            'possession_state' => 'required|string',
+            'rating' => ['required', 'string', new RatingValues],
+            'possession_state' => ['required', 'string', new PossessionStateValues],
             'image' => 'nullable|string',
         ];
     }

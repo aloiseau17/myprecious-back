@@ -23,12 +23,8 @@ class MovieRepository implements RepositoryInterface
     // create a new record in the database
     public function create(array $data)
     {
-        $this->movie->title = $data['title'];
-        $this->movie->director = $data['director'];
-        $this->movie->type = $data['type'];
-        $this->movie->rating = $data['rating'];
-        $this->movie->possession_state = $data['possession_state'];
-        $this->movie->image = $data['image'];
+
+        $this->movie->fill($data);
 
         return $this->movie->save();
     }
@@ -36,7 +32,8 @@ class MovieRepository implements RepositoryInterface
     // update record in the database
     public function update(array $data, $id)
     {
-        $record = $this->find($id);
+        $record = $this->movie->find($id);
+
         return $record->update($data);
     }
 
@@ -49,12 +46,18 @@ class MovieRepository implements RepositoryInterface
     // show the record with the given id
     public function show($id)
     {
-        return $this->movie-findOrFail($id);
+        return $this->movie->findOrFail($id);
     }
 
     // Get the associated model
     public function getModel()
     {
         return $this->movie;
+    }
+
+    // Get movie item by $id
+    public function getItemById($id)
+    {
+        return $this->movie->find($id);
     }
 }

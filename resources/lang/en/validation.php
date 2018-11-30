@@ -143,5 +143,7 @@ return [
     */
 
     'attributes' => [],
+    'rating_values' => 'The value of :attribute doesn\'t exist.',
+    'possession_state_values' => 'The value of :attribute doesn\'t exist.',
 
 ];
