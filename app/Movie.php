@@ -14,8 +14,7 @@ class Movie extends Model
      */
     protected $fillable = [
     	'title',
-        'director',
-        'type',
+        'director_id',
         'rating',
         'possession_state',
         'image',
@@ -49,6 +48,22 @@ class Movie extends Model
     	} else {
     		$this->attributes['possession_state'] = $value;
     	}
+    }
+
+    /**
+     * Get the director for the movie.
+     */
+    public function director()
+    {
+        return $this->belongsTo('App\Director');   
+    }
+
+    /**
+     * The types that belong to the movie.
+     */
+    public function types()
+    {
+        return $this->belongsToMany('App\Type');
     }
 
 }

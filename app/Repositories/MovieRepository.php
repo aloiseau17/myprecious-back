@@ -24,9 +24,16 @@ class MovieRepository implements RepositoryInterface
     public function create(array $data)
     {
 
-        $this->movie->fill($data);
+        $movie = $this->movie->create($data);
 
-        return $this->movie->save();
+        // Attach types list to movie via pivot table
+        if($data['types']) {
+
+            $movie->types()->attach($data['types']);
+
+        }
+
+        return $movie;
     }
 
     // update record in the database
@@ -34,12 +41,25 @@ class MovieRepository implements RepositoryInterface
     {
         $record = $this->movie->find($id);
 
-        return $record->update($data);
+        $status = $record->update($data);
+
+        // Attach types list to movie via pivot table
+        if($data['types']) {
+
+            $record->types()->sync($data['types']);
+
+        }
+
+        return $status;
     }
 
     // remove record from the database
     public function delete($id)
     {
+        $movie = $this->movie->find($id);
+
+        $movie->types()->detach();
+
         return $this->movie->destroy($id);
     }
 

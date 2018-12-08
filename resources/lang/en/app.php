@@ -39,5 +39,6 @@ return [
     'movie_rating_fantastic' => 'Fantastic',
     'movie_title' => 'Title',
     'movie_type' => 'Type',
+    'movie_type_helper' => 'To save multiple type separate them by semi-colon ";"'
 
 ];

@@ -35,7 +35,7 @@
 				{{-- ================= MOVIE DIRECTOR ================= --}}
 				<div class="form-group">
 					{{ Form::label('director', __('app.movie_director')) }}
-					{{ Form::text('director', $movie->director, [
+					{{ Form::text('director', $movie->director ? $movie->director->name : null, [
 						'class' => 'form-control'
 					]) }}
 
@@ -48,14 +48,17 @@
 
 				{{-- ================= MOVIE TYPE ================= --}}
 				<div class="form-group">
-					{{ Form::label('type', __('app.movie_type')) }}
-					{{ Form::text('type', $movie->type, [
+					{{ Form::label('types', __('app.movie_type')), [
+						'aria-describedby' => 'typesHelp',
+					] }}
+					<small id="typesHelp" class="form-text text-muted">{{ __('app.movie_type_helper') }}</small>
+					{{ Form::text('types', $types_names, [
 						'class' => 'form-control'
 					]) }}
 
-					@if($errors->has('type'))
+					@if($errors->has('types'))
 						<small id="passwordHelpBlock" class="form-text text-danger">
-    						{{ $errors->first('type') }}						  
+    						{{ $errors->first('types') }}						  
 						</small>
 					@endif
 				</div>

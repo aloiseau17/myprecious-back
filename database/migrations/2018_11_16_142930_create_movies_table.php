@@ -16,8 +16,7 @@ class CreateMoviesTable extends Migration
         Schema::create('movies', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title');
-            $table->string('director')->nullable();
-            $table->string('type')->nullable();
+            $table->unsignedInteger('director_id')->nullable();
             $table->string('rating')->nullable(); // "fantastic", "bad", null
             $table->string('possession_state')->nullable(); // "own" / "to_own" / null
             $table->string('image')->nullable();

@@ -7,6 +7,8 @@ use Lang;
 
 // Repository
 use App\Repositories\MovieRepository;
+use App\Repositories\TypeRepository;
+use App\Repositories\DirectorRepository;
 
 // Request
 use App\Http\Requests\MovieRequest;
@@ -15,10 +17,13 @@ class MovieController extends Controller
 {
     protected $movies;
 
-    public function __construct(MovieRepository $movies)
+    public function __construct(MovieRepository $movie, TypeRepository $type, DirectorRepository $director)
     {
-        // set the model
-        $this->movies = $movies;
+
+        $this->movie = $movie;
+        $this->type = $type;
+        $this->director = $director;
+
     }
 
     /**
@@ -28,8 +33,10 @@ class MovieController extends Controller
      */
     public function index()
     {
-        $movies = $this->movies->all();
+
+        $movies = $this->movie->all();
         return view('movies.index', compact('movies'));
+
     }
 
     /**
@@ -39,7 +46,9 @@ class MovieController extends Controller
      */
     public function create()
     {
-         return view('movies.create');
+
+        return view('movies.create');
+
     }
 
     /**
@@ -51,7 +60,20 @@ class MovieController extends Controller
     public function store(MovieRequest $request)
     {
 
-        $this->movies->create($request->all());
+        // manage director
+        if($request->director)
+        {
+            $request['director_id'] = $this->manage_movie_director($request->director);
+        }
+
+        // store types
+        if($request->types)
+        {
+            $request['types'] = $this->manage_movie_types($request->types);
+        }
+
+        // Store types
+        $this->movie->create($request->all());
         
         return redirect()->route('movies.index')->with('status', Lang::get('app.movie_add_success', ['title' => $request->title]));
 
@@ -77,9 +99,10 @@ class MovieController extends Controller
     public function edit($id)
     {
 
-        $movie = $this->movies->getItemById($id);
+        $movie = $this->movie->getItemById($id);
+        $types_names = implode(';', $movie->types->pluck('name')->toArray());
 
-        return view('movies.edit', compact('movie'));
+        return view('movies.edit', compact('movie', 'types_names'));
 
     }
 
@@ -92,9 +115,28 @@ class MovieController extends Controller
      */
     public function update(MovieRequest $request, $id)
     {
+
+        // manage director
+        if($request->director)
+        {
+            $request['director_id'] = $this->manage_movie_director($request->director);
+        }
+
+        // store types
+        if($request->types)
+        {
+            $request['types'] = $this->manage_movie_types($request->types);
+        }
         
-        $status = $this->movies->update($request->all(), $id);
-        $movie = $this->movies->getItemById($id);
+        // update movie
+        $status = $this->movie->update($request->all(), $id);
+
+        // remove not related director(s)
+        $this->director->removeIsolated();
+
+        // remove not related type(s)
+        $this->type->removeIsolated();
+
         $message = $status ? Lang::get('app.movie_edit_success') : Lang::get('app.movie_edit_fail');
 
         return redirect()->route('movies.index')->with('status', $message);
@@ -110,11 +152,57 @@ class MovieController extends Controller
     public function destroy($id)
     {
 
-        $movie = $this->movies->getItemById($id);
-        $status = $this->movies->delete($id);
+        $movie = $this->movie->getItemById($id);
+        $status = $this->movie->delete($id);
+
+        // remove not related director(s)
+        $this->director->removeIsolated();
+
+        // remove not related type(s)
+        $this->type->removeIsolated();
+        
         $message = $status ? Lang::get('app.movie_delete_success', ['title' => $movie->title]) : Lang::get('app.movie_delete_fail', ['title' => $movie->title]);
 
         return redirect()->route('movies.index')->with('status', $message);
 
     }
+
+    /**
+     * Store or retrieve director's id
+     *
+     * @param  string  $director_name
+     * @return int $id
+     */
+    protected function manage_movie_director($director_name)
+    {
+
+        $director = $this->director->findOrCreate(['name' => $director_name]);
+
+        return $director->id;
+
+    }
+
+    /**
+     * Store or retrieve types'id
+     *
+     * @param  string  $types_names
+     * @return array $types_ids
+     */
+    protected function manage_movie_types($types_names)
+    {
+
+        $types = explode(';', $types_names);
+        $types_ids = [];
+
+        foreach ($types as $name) {
+
+            $type = $this->type->findOrCreate(['name' => $name]);
+            $types_ids[] = $type->id;
+
+        }
+
+        return $types_ids;
+
+    }
+
 }
