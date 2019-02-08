@@ -30,3 +30,4 @@ Route::middleware('auth:api')->group(function () {
 Route::post('/login', 'AuthController@login');
 Route::post('/register', 'AuthController@register');
 Route::middleware('auth:api')->post('/logout', 'AuthController@logout');
+Route::post('/refresh-login', 'AuthController@refreshToken');

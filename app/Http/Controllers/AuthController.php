@@ -67,4 +67,35 @@ class AuthController extends Controller
 
     	return response()->json('Logged out successfully', 200);
     }
+
+    public function refreshToken(Request $request)
+    {
+        $http = new \GuzzleHttp\Client;
+
+        try {
+
+            $response = $http->post('http://myprecious.local:8080/oauth/token', [
+                'form_params' => [
+                    'grant_type' => 'refresh_token',
+                    'refresh_token' => $request->refresh_token,
+                    'client_id' => config('services.passport.client_id'),
+                    'client_secret' => config('services.passport.client_secret'),
+                    'scope' => ''
+                ]
+            ]);
+
+            return $response->getBody();
+
+        } catch (\GuzzleHttp\Exception\BadResponseException $e) {
+
+            if ($e->getCode() === 400) {
+                return response()->json('Invalid Request. Please enter a username or a password.', $e->getCode());
+            } else if ($e->getCode() === 401) {
+                return response()->json('Your credentials are incorrect. Please try again', $e->getCode());
+            }
+
+            return response()->json('Something went wrong on the server.', $e->getCode());
+
+        }
+    }
 }
