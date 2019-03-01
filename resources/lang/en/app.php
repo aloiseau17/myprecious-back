@@ -12,6 +12,19 @@ return [
     |
     */
 
+    // Filters
+    'order' => 'Order',
+    'asc' => 'Ascendant',
+    'desc' => 'Descendant',
+    'order_by' => 'Order by',
+    'creation_date' => 'creation date',
+    'title' => 'title',
+    'first_letter' => 'First movie letter',
+    'not_in' => 'Ids excluded',
+    'not_in_helper' => 'Could be an array [1,2,...] or a simple number.',
+    'number' => 'Number by page',
+    'page' => 'Page number',
+
     // Form controls
     'cancel' => 'Cancel',
     'delete' => 'Delete',
@@ -27,8 +40,10 @@ return [
     'movie_edit' => 'Edit: :title',
     'movie_edit_fail' => 'Error during update process',
     'movie_edit_success' => 'Movie updated successfully',
+    'movie_filter' => 'Recherche des films',
     'movie_image' => 'Image',
     'movie_list_seen' => 'Seen movies list',
+    'movie_list_to_see' => 'Movies to seen list',
     'movie_possession_state' => 'Possession',
     'movie_possession_state_default' => 'Default',
     'movie_possession_state_own' => 'Owned',
@@ -37,6 +52,7 @@ return [
     'movie_rating_bad' => 'Bad',
     'movie_rating_do_not_know' => 'Don\'t know',
     'movie_rating_fantastic' => 'Fantastic',
+    'movie_search' => 'Search a movie',
     'movie_title' => 'Title',
     'movie_type' => 'Type',
     'movie_type_helper' => 'To save multiple type separate them by semi-colon ";"'

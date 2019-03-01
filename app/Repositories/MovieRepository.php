@@ -80,4 +80,66 @@ class MovieRepository implements RepositoryInterface
     {
         return $this->movie->find($id);
     }
+
+    // Get movies according to parameters
+    /**
+     * Available parameters
+     *
+     * director : directors.name
+     * first_letter : movies.title get movie with title starting with this letter
+     * not_in : array of ids to exclude
+     * number : number of movies to retrieve
+     * order : ASC or DESC
+     * order_by : title or created_at
+     * page : page number
+     * possession_state : movies.possession_state
+     * rating : movies.rating
+     * type : types.name
+     **/
+    public function find($inputs)
+    {
+        $defaults = array(
+            "director"          => null,
+            "first_letter"      => null,
+            "not_in"            => null,
+            "number"            => 10,
+            "order"             => "DESC",
+            "order_by"          => "created_at",
+            "page"              => 1,
+            "possession_state"  => null,
+            "rating"            => null,
+            "type"              => null,
+        );
+        
+        // Apply defaut to undefined keys
+        $inputs = array_replace_recursive($defaults, $inputs);
+
+        $movies = $this->movie
+            ->when($inputs['possession_state'], function ($query, $possession_state) {
+                return $query->where('possession_state', '=', $possession_state);
+            })
+            ->when($inputs['rating'], function ($query, $rating) {
+                return $query->where('rating', '=', $rating);
+            })
+            ->when($inputs['type'], function ($query, $type) {
+                return $query->whereHas('types', function ($query) use ($type) {
+                    $query->where('name', 'like', '%' . $type . '%');
+                });
+            })
+            ->when($inputs['director'], function ($query, $director) {
+                return $query->whereHas('director', function ($query) use ($director) {
+                    $query->where('name', 'like', '%' . $director . '%');
+                });
+            })
+            ->when($inputs['first_letter'], function ($query, $letter) {
+                return $query->where('title', 'like', $letter . '%');
+            })
+            ->when($inputs['not_in'], function ($query, $not_in) {
+                return $query->whereNotIn('id', json_decode($not_in));
+            })
+            ->orderBy($inputs['order_by'], $inputs['order'])
+            ->paginate($inputs["number"]);
+
+        return $movies;
+    }
 }

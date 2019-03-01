@@ -12,6 +12,7 @@ use App\Repositories\DirectorRepository;
 
 // Request
 use App\Http\Requests\MovieRequest;
+use App\Http\Requests\MovieSearchRequest;
 
 class MovieController extends Controller
 {
@@ -165,6 +166,28 @@ class MovieController extends Controller
 
         return redirect()->route('movies.index')->with('status', $message);
 
+    }
+
+    /**
+     * Show the form for filter movies
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function search()
+    {
+        return view('movies.search');
+    }
+
+    /**
+     * Return movies list according to the request parameters
+     *
+     * @param  \Illuminate\Http\App\Http\Requests\MovieSearchRequest  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function filter(MovieSearchRequest $request)
+    {
+        $movies = $this->movie->find($request->all());
+        return view('movies.filter', compact('movies', 'request'));
     }
 
     /**
