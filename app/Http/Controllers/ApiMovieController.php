@@ -15,6 +15,7 @@ use App\Repositories\DirectorRepository;
 
 // Request
 use App\Http\Requests\MovieRequest;
+use App\Http\Requests\MovieSearchRequest;
 
 class ApiMovieController extends Controller
 {
@@ -136,6 +137,23 @@ class ApiMovieController extends Controller
 
         return response()->json(null, 204); // 204 (No content)
 
+    }
+
+    /**
+     * Return movies list according to the request parameters
+     *
+     * @param  \Illuminate\Http\App\Http\Requests\MovieSearchRequest  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function filter(MovieSearchRequest $request)
+    {
+        $movies = $this->movie->find($request->all());
+
+        if($movies->total() === 0) {
+            return response()->json(null, 204);  // 204 (No content)
+        } else {
+            return response()->json($movies, 200);
+        }
     }
 
     /**

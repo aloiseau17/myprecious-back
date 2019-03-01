@@ -20,10 +20,11 @@ Route::middleware('auth:api')->group(function () {
 	});
 
     Route::get('movies', 'ApiMovieController@index');
-	Route::get('movies/{movie}', 'ApiMovieController@show');
+	Route::get('movies/{movie}', 'ApiMovieController@show')->where('movie', '[0-9]+');
 	Route::post('movies', 'ApiMovieController@store');
 	Route::patch('movies/{movie}', 'ApiMovieController@update');
 	Route::delete('movies/{movie}', 'ApiMovieController@destroy');
+	Route::get('movies/search', 'ApiMovieController@filter');
 
 });
 
