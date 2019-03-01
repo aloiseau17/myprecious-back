@@ -32,6 +32,7 @@ class MovieRequest extends FormRequest
             'director' => 'nullable|string',
             'type' => 'nullable|string',
             'rating' => ['required', 'string', new RatingValues],
+            'seen' => 'boolean',
             'possession_state' => ['required', 'string', new PossessionStateValues],
             'image' => 'nullable|string',
         ];

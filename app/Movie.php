@@ -17,6 +17,7 @@ class Movie extends Model
         'director_id',
         'rating',
         'possession_state',
+        'seen',
         'image',
     ];
 

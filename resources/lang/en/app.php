@@ -27,6 +27,7 @@ return [
 
     // Form controls
     'cancel' => 'Cancel',
+    'default' => 'Default',
     'delete' => 'Delete',
     'edit' => 'Edit',
     'save' => 'Save',
@@ -52,9 +53,11 @@ return [
     'movie_rating_bad' => 'Bad',
     'movie_rating_do_not_know' => 'Don\'t know',
     'movie_rating_fantastic' => 'Fantastic',
+    'movie_seen' => 'Seen',
     'movie_search' => 'Search a movie',
     'movie_title' => 'Title',
     'movie_type' => 'Type',
+    'movie_unseen' => 'Unseen',
     'movie_type_helper' => 'To save multiple type separate them by semi-colon ";"'
 
 ];

@@ -33,6 +33,7 @@ class MovieSearchRequest extends FormRequest
             'possession_state' => 'nullable|in:own,to_own',
             'rating' => 'nullable|in:fantastic,bad',
             'offset' => 'nullable|numeric',
+            'seen' => 'nullable|boolean',
             'types' => 'nullable|string',
         ];
     }

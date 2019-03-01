@@ -17,6 +17,7 @@ class CreateMoviesTable extends Migration
             $table->increments('id');
             $table->string('title');
             $table->unsignedInteger('director_id')->nullable();
+            $table->boolean('seen')->default(false);
             $table->string('rating')->nullable(); // "fantastic", "bad", null
             $table->string('possession_state')->nullable(); // "own" / "to_own" / null
             $table->string('image')->nullable();

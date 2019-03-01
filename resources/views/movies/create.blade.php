@@ -62,6 +62,33 @@
 					@endif
 				</div>
 
+				{{-- ================= MOVIE SEE STATUS ================= --}}
+				<div class="form-group">
+					{{-- Seen --}}
+					<div class="form-check">
+						{{ Form::radio('seen', 1, false, [
+							'id' => 'seen',
+							'class' => 'form-check-input',
+						]) }}
+						{{ Form::label('seen', __('app.movie_seen')) }}
+					</div>
+
+					{{-- Unseen --}}
+					<div class="form-check">
+						{{ Form::radio('seen', 0, true, [
+							'id' => 'unseen',
+							'class' => 'form-check-input',
+						]) }}
+						{{ Form::label('unseen', __('app.movie_unseen')) }}
+					</div>
+
+					@if($errors->has('seen'))
+						<small id="passwordHelpBlock" class="form-text text-danger">
+    						{{ $errors->first('seen') }}						  
+						</small>
+					@endif
+				</div>
+
 				{{-- ================= MOVIE RATING ================= --}}
 				<div class="form-group">
 					

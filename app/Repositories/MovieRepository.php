@@ -94,6 +94,7 @@ class MovieRepository implements RepositoryInterface
      * page : page number
      * possession_state : movies.possession_state
      * rating : movies.rating
+     * seen : movie.seen
      * type : types.name
      **/
     public function find($inputs)
@@ -108,6 +109,7 @@ class MovieRepository implements RepositoryInterface
             "page"              => 1,
             "possession_state"  => null,
             "rating"            => null,
+            "seen"              => null,
             "type"              => null,
         );
         
@@ -120,6 +122,10 @@ class MovieRepository implements RepositoryInterface
             })
             ->when($inputs['rating'], function ($query, $rating) {
                 return $query->where('rating', '=', $rating);
+            })
+            ->when(!is_null($inputs['seen']), function ($query) use ($inputs) {
+                $seenState = $inputs['seen'] == "1" ? 1 : 0;
+                return $query->where('seen', '=', $seenState);
             })
             ->when($inputs['type'], function ($query, $type) {
                 return $query->whereHas('types', function ($query) use ($type) {
