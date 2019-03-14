@@ -262,7 +262,7 @@
 						'aria-describedby' => 'notInHelp',
 					] }}
 					<small id="notInHelp" class="form-text text-muted">{{ __('app.not_in_helper') }}</small>
-					{{ Form::text('not_in', old('not_in') ?: null, [
+					{{ Form::text('not_in[]', old('not_in') ?: null, [
 						'class' => 'form-control'
 					]) }}
 
@@ -271,6 +271,21 @@
     						{{ $errors->first('not_in') }}						  
 						</small>
 					@endif
+				</div>
+
+				{{-- ================= MOVIE RANDOM ================= --}}
+				<div class="form-group">
+
+					<div class="form-check">
+						{{ Form::checkbox('random', true, old('random') ?: false, [
+							'id' => 'random',
+							'class' => 'form-check-input',
+						])}}
+						{{ Form::label('random', __('app.random'), [
+							'class' => 'form-check-label',
+						]) }}
+					</div>
+
 				</div>
 
 				{{-- ================= FORM SUBMIT ================= --}}

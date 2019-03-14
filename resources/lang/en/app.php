@@ -21,9 +21,10 @@ return [
     'title' => 'title',
     'first_letter' => 'First movie letter',
     'not_in' => 'Ids excluded',
-    'not_in_helper' => 'Could be an array [1,2,...] or a simple number.',
+    'not_in_helper' => 'Could be an array [1,2,...] or a simple number. For demo purpose only single number is available on web.',
     'number' => 'Number by page',
     'page' => 'Page number',
+    'random' => 'Random',
 
     // Form controls
     'cancel' => 'Cancel',

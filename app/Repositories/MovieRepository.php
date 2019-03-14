@@ -95,6 +95,7 @@ class MovieRepository implements RepositoryInterface
      * possession_state : movies.possession_state
      * rating : movies.rating
      * seen : movie.seen
+     * random : get random movie (used only if you require on page)
      * type : types.name
      **/
     public function find($inputs)
@@ -110,6 +111,7 @@ class MovieRepository implements RepositoryInterface
             "possession_state"  => null,
             "rating"            => null,
             "seen"              => null,
+            "random"            => false,
             "type"              => null,
         );
         
@@ -141,9 +143,14 @@ class MovieRepository implements RepositoryInterface
                 return $query->where('title', 'like', $letter . '%');
             })
             ->when($inputs['not_in'], function ($query, $not_in) {
-                return $query->whereNotIn('id', json_decode($not_in));
+                return $query->whereNotIn('id', $not_in);
             })
-            ->orderBy($inputs['order_by'], $inputs['order'])
+            ->when($inputs['random'], function($query) {
+                return $query->inRandomOrder();
+            })
+            ->when(!$inputs['random'], function($query) use ($inputs) {
+                return $query->orderBy($inputs['order_by'], $inputs['order']);
+            })
             ->paginate($inputs["number"]);
 
         return $movies;

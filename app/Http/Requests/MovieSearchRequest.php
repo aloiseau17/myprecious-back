@@ -26,13 +26,14 @@ class MovieSearchRequest extends FormRequest
         return [
             'director' => 'nullable|string',
             'first_letter' => 'nullable|string|alpha|size:1',
-            'not_in' => 'nullable|string',
+            'not_in' => 'nullable|array',
             'number' => 'nullable|numeric',
             'order' => 'nullable|in:ASC,DESC,asc,desc',
             'order_by' => 'nullable|in:created_at,title',
             'possession_state' => 'nullable|in:own,to_own',
             'rating' => 'nullable|in:fantastic,bad',
             'offset' => 'nullable|numeric',
+            'random' => 'nullable|boolean',
             'seen' => 'nullable|boolean',
             'types' => 'nullable|string',
         ];
