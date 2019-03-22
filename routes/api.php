@@ -15,9 +15,8 @@ use Illuminate\Http\Request;
 
 Route::middleware('auth:api')->group(function () {
 
-	Route::get('/user', function (Request $request) {
-	    return $request->user();
-	});
+	Route::get('/user', 'ApiUserController@show');
+	Route::patch('/user-options', 'ApiUserOptionsController@update');
 
     Route::get('movies', 'ApiMovieController@index');
 	Route::get('movies/{movie}', 'ApiMovieController@show')->where('movie', '[0-9]+');

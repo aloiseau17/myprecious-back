@@ -28,4 +28,14 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /**
+     * Get the movie that owns the type.
+     */
+    public function userOptions()
+    {
+
+        return $this->hasOne('App\UserOptions');
+
+    }
 }

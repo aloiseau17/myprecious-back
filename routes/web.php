@@ -18,6 +18,8 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/user-options/edit', 'UserOptionsController@edit')->name('user-option.edit');
+Route::middleware('auth')->patch('/user-options', 'UserOptionsController@update')->name('user-option.update');
 
 Route::get('movies', 'MovieController@index')->name('movies.index');
 Route::get('movies/create', 'MovieController@create')->name('movies.create');

@@ -29,6 +29,11 @@
                       @lang('app.movie_search')
                     </a>
                </li>
+               <li>
+                    <a href="{{ route('user-option.edit') }}">
+                      @lang('app.user_options')
+                    </a>
+               </li>
             </ul>
         </div>
     <div class="row">
