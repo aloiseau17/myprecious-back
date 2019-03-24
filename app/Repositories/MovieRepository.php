@@ -78,7 +78,7 @@ class MovieRepository implements RepositoryInterface
     // Get movie item by $id
     public function getItemById($id)
     {
-        return $this->movie->find($id);
+        return $this->movie->with('director')->with('types')->find($id);
     }
 
     // Get movies according to parameters

@@ -56,7 +56,7 @@ class Movie extends Model
      */
     public function director()
     {
-        return $this->belongsTo('App\Director')->withDefault();   
+        return $this->belongsTo('App\Director');  
     }
 
     /**

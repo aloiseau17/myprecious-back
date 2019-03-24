@@ -76,9 +76,11 @@ class ApiMovieController extends Controller
      * @param  \App\Movie  $movie
      * @return \Illuminate\Http\Response
      */
-    public function show(Movie $movie)
+    public function show($id)
     {
-        return $movie; // automatically return 404 if not found
+        $movie = $this->movie->getItemById($id);
+
+        return response()->json($movie, 200);
     }
 
     /**
@@ -114,7 +116,7 @@ class ApiMovieController extends Controller
 
         $message = $status ? Lang::get('app.movie_edit_success') : Lang::get('app.movie_edit_fail');
 
-        return response()->json($message, 200);
+        return response()->json(['message' => $message], 200);
 
     }
 
