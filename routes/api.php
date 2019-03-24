@@ -16,6 +16,8 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->group(function () {
 
 	Route::get('/user', 'ApiUserController@show');
+	Route::patch('/user-email', 'ApiUserController@updateEmail');
+	Route::patch('/user-password', 'ApiUserController@updatePassword');
 	Route::patch('/user-options', 'ApiUserOptionsController@update');
 
     Route::get('movies', 'ApiMovieController@index');

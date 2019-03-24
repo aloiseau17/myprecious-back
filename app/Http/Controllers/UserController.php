@@ -2,36 +2,37 @@
 
 namespace App\Http\Controllers;
 
-// Repositoriers
+// Repository
 use App\Repositories\UserRepository;
 
 // Request
-use Illuminate\Http\Request;
 use App\Http\Requests\UserEmailUpdateRequest;
 use App\Http\Requests\UserPasswordUpdateRequest;
 
-class ApiUserController extends Controller
+// Helpers
+use Lang;
+
+class UserController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
+
     public function __construct(UserRepository $user)
     {
-        $this->middleware('auth');
+
         $this->userRepo = $user;
+
     }
 
     /**
-     * Retrieve user information
+     * Show the form for editing the specified resource.
      *
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request)
+    public function edit()
     {
-        $user = $this->userRepo->getUserById($request->user()->id);
-        return response()->json($user, 200);
+
+        return view('users.user-account');
+
     }
 
     /**
@@ -43,10 +44,11 @@ class ApiUserController extends Controller
      */
     public function updateEmail(UserEmailUpdateRequest $request)
     {
-
         $status = $this->userRepo->update($request->all(), $request->user()->id);
 
-        return response()->json(null, 200);
+        $message = $status ? Lang::get('app.user_edit_success') : Lang::get('app.user_edit_fail');
+
+        return redirect()->route('user-account.edit')->with('status', $message);
 
     }
 
@@ -59,10 +61,11 @@ class ApiUserController extends Controller
      */
     public function updatePassword(UserPasswordUpdateRequest $request)
     {
-        
-        $status = $this->userRepo->update($request->all(), $request->user()->id);
+    	$status = $this->userRepo->update($request->all(), $request->user()->id);
 
-        return response()->json($status, 200);
+        $message = $status ? Lang::get('app.user_edit_success') : Lang::get('app.user_edit_fail');
+
+        return redirect()->route('user-account.edit')->with('status', $message);
 
     }
 }

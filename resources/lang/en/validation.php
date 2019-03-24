@@ -145,5 +145,6 @@ return [
     'attributes' => [],
     'rating_values' => 'The value of :attribute doesn\'t exist.',
     'possession_state_values' => 'The value of :attribute doesn\'t exist.',
+    'old_password_values' => 'Current password is invalid'
 
 ];

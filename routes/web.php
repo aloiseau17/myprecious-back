@@ -20,6 +20,9 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/user-options/edit', 'UserOptionsController@edit')->name('user-option.edit');
 Route::middleware('auth')->patch('/user-options', 'UserOptionsController@update')->name('user-option.update');
+Route::get('/user-account/edit', 'UserController@edit')->name('user-account.edit');
+Route::middleware('auth')->patch('/user-email', 'UserController@updateEmail')->name('user-email.update');
+Route::middleware('auth')->patch('/user-password', 'UserController@updatePassword')->name('user-password.update');
 
 Route::get('movies', 'MovieController@index')->name('movies.index');
 Route::get('movies/create', 'MovieController@create')->name('movies.create');

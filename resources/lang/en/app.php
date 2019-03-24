@@ -17,7 +17,7 @@ return [
     'asc' => 'Ascendant',
     'desc' => 'Descendant',
     'order_by' => 'Order by',
-    'creation_date' => 'creation date',
+    'creation_date' => 'Creation date',
     'title' => 'title',
     'first_letter' => 'First movie letter',
     'not_in' => 'Ids excluded',
@@ -59,6 +59,22 @@ return [
     'movie_title' => 'Title',
     'movie_type' => 'Type',
     'movie_unseen' => 'Unseen',
-    'movie_type_helper' => 'To save multiple type separate them by semi-colon ";"'
+    'movie_type_helper' => 'To save multiple type separate them by semi-colon ";"',
+
+    // Users
+    'email' => 'Email',
+    'password' => 'Password',
+    'confirm_password' => 'Confirm password',
+    'new_password' => 'New password',
+    'old_password' => 'Old password',
+    'user_account' => 'User account',
+    'user_id' => 'User id',
+    'user_edit_fail' => 'Error during update process',
+    'user_edit_success' => 'User updated successfully',
+    'user_options' => 'User settings',
+    'user_options_list_order' => 'List order',
+    'user_options_list_order_by' => 'List order by',
+    'user_update_email' => 'Update your email',
+    'user_update_password' => 'Update your password',
 
 ];

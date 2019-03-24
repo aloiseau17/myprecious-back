@@ -3,6 +3,9 @@
 // Model
 use App\User;
 
+// Helpers
+use Hash;
+
 class UserRepository
 {
     // model property on class instances
@@ -18,5 +21,20 @@ class UserRepository
     public function getUserById($id)
     {
         return $this->user->with('userOptions')->find($id);
+    }
+
+    // update record in the database
+    public function update(array $data, $id)
+    {
+        $record = $this->user->find($id);
+
+        // Hash new password
+        if(isset($data['password'])) {
+            $data['password'] = Hash::make($data['password']);
+        }
+
+        $status = $record->update($data);
+
+        return $status;
     }
 }

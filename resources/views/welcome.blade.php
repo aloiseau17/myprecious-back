@@ -34,6 +34,11 @@
                       @lang('app.user_options')
                     </a>
                </li>
+               <li>
+                    <a href="{{ route('user-account.edit') }}">
+                      @lang('app.user_account')
+                    </a>
+               </li>
             </ul>
         </div>
     <div class="row">
