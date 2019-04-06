@@ -121,6 +121,8 @@ class MovieController extends Controller
         if($request->director)
         {
             $request['director_id'] = $this->manage_movie_director($request->director);
+        } else {
+            $request['director_id'] = null;
         }
 
         // store types

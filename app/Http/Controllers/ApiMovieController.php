@@ -48,7 +48,7 @@ class ApiMovieController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(MovieRequest $request)
+    public function store(MovieRequest $reqeust)
     {
 
         // manage director
@@ -97,6 +97,8 @@ class ApiMovieController extends Controller
         if($request->director)
         {
             $request['director_id'] = $this->manage_movie_director($request->director);
+        } else {
+            $request['director_id'] = null;
         }
 
         // store types
