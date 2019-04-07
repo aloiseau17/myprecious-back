@@ -3,6 +3,9 @@
 // Model
 use App\Movie;
 
+// Helpers
+use Illuminate\Support\Facades\Storage;
+
 class MovieRepository implements RepositoryInterface
 {
     // model property on class instances
@@ -33,6 +36,13 @@ class MovieRepository implements RepositoryInterface
 
         }
 
+        // If image save movieId name + update movie image path
+        if($data['file']) {
+
+            $this->savePoster($movie, $data['file']);
+
+        }
+
         return $movie;
     }
 
@@ -40,6 +50,18 @@ class MovieRepository implements RepositoryInterface
     public function update(array $data, $id)
     {
         $record = $this->movie->find($id);
+
+        if(isset($data['file']) || isset($data['file_remove'])) {
+            // remove old file if exist with other extension
+            $this->removePoster($record, isset($data['file_remove']));
+        }
+
+        // If new file
+        if(isset($data['file'])) {
+
+            $this->savePoster($record, $data['file']);
+
+        }
 
         $status = $record->update($data);
 
@@ -75,6 +97,31 @@ class MovieRepository implements RepositoryInterface
     public function getItemById($id)
     {
         return $this->movie->with('director')->with('types')->find($id);
+    }
+
+    // Remove existing file
+    private function removePoster($record, $sync = false) {
+        if($record->image) {
+            Storage::disk('public')->delete($record->image);
+        }
+
+        if($sync)
+            $record->update([
+                'image' => null
+            ]);
+    }
+
+    // Save and sync movie poster
+    private function savePoster($record, $file) {
+        $image_path = $file->storeAs(
+            'posters', // folder
+            $record->id . '.' . $file->getClientOriginalExtension(), // name
+            'public' // disk
+        );
+
+        $record->update([
+            'image' => $image_path
+        ]);
     }
 
     // Get movies according to parameters

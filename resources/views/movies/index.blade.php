@@ -22,6 +22,10 @@
 			<ul>
 				@foreach($movies as $movie)
 					<li class="mb-2">
+						@if($movie->image)
+							<img src="{{ asset('/storage/' . $movie->image) }}" alt="{{ $movie->title }} poster">
+						@endif
+
 						{{ $movie->title }}
 						
 						{{-- ================= EDIT BUTTON ================= --}}

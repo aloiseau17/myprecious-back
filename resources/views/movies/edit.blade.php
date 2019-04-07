@@ -15,6 +15,7 @@
 			{!! Form::open([
 				'url' => route('movies.update', ['id' => $movie->id]),
 				'method' => 'PATCH',
+				'files' => true,
 			]) !!}
 				
 				{{-- ================= MOVIE TITLE ================= --}}
@@ -177,16 +178,32 @@
 				</div>
 
 				{{-- ================= MOVIE IMAGE ================= --}}
+				@if($movie->image)
+					<img src="{{ asset('/storage/' . $movie->image) }}" alt="{{ $movie->title }} poster">
+				@endif
 				<div class="form-group">
-					{{ Form::label('image', __('app.movie_image')) }}
-					{{ Form::text('image', $movie->image, [
+					{{ Form::label('file', __('app.movie_image')) }}
+					{{ Form::file('file', null, [
 						'class' => 'form-control'
 					]) }}
 
-					@if($errors->has('image'))
+					@if($errors->has('file'))
 						<small id="passwordHelpBlock" class="form-text text-danger">
-    						{{ $errors->first('image') }}						  
+    						{{ $errors->first('file') }}						  
 						</small>
+					@endif
+
+					@if($movie->image)
+						{{ Form::checkbox('file_remove', 1, old('file_remove'), [
+							'id' 	=> 'file_remove',
+							'class' => 'form-check-input',
+						]) }}
+						{{ Form::label('file_remove', __('app.movie_remove_image')) }}
+						@if($errors->has('file_remove'))
+							<small id="passwordHelpBlock" class="form-text text-danger">
+	    						{{ $errors->first('file_remove') }}						  
+							</small>
+						@endif
 					@endif
 				</div>
 

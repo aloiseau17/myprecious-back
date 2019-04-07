@@ -14,6 +14,7 @@
 			{!! Form::open([
 				'url' => route('movies.store'),
 				'method' => 'POST',
+				'files' => true,
 			]) !!}
 				
 				{{-- ================= MOVIE TITLE ================= --}}
@@ -177,14 +178,14 @@
 
 				{{-- ================= MOVIE IMAGE ================= --}}
 				<div class="form-group">
-					{{ Form::label('image', __('app.movie_image')) }}
-					{{ Form::text('image', null, [
+					{{ Form::label('file', __('app.movie_image')) }}
+					{{ Form::file('file', null, [
 						'class' => 'form-control'
 					]) }}
 
-					@if($errors->has('image'))
+					@if($errors->has('file'))
 						<small id="passwordHelpBlock" class="form-text text-danger">
-    						{{ $errors->first('image') }}						  
+    						{{ $errors->first('file') }}						  
 						</small>
 					@endif
 				</div>
