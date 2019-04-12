@@ -11,6 +11,8 @@ class MovieRepository implements RepositoryInterface
 {
     // model property on class instances
     protected $movie;
+    private $posterFolder = 'posters';
+    private $posterDisk = 'public';
 
     // Constructor to bind model to repo
     public function __construct(Movie $movie)
@@ -38,9 +40,13 @@ class MovieRepository implements RepositoryInterface
         }
 
         // If image save movieId name + update movie image path
-        if($data['file']) {
+        if(isset($data['file'])) {
 
             $this->savePoster($movie, $data['file']);
+
+        } elseif (isset($data['poster_link'])) {
+
+            $this->downloadUrlImage($movie, $data['poster_link']);
 
         }
 
@@ -54,13 +60,17 @@ class MovieRepository implements RepositoryInterface
 
         if(isset($data['file']) || isset($data['file_remove'])) {
             // remove old file if exist with other extension
-            $this->removePoster($record, isset($data['file_remove']));
+            $this->removePoster($record->image, isset($data['file_remove']));
         }
 
         // If new file
         if(isset($data['file'])) {
 
             $this->savePoster($record, $data['file']);
+
+        } elseif (isset($data['poster_link'])) {
+
+            $this->downloadUrlImage($record, $data['poster_link']);
 
         }
 
@@ -76,6 +86,8 @@ class MovieRepository implements RepositoryInterface
     public function delete($id)
     {
         $movie = $this->movie->find($id);
+
+        $this->removePoster($movie->image);
 
         $movie->types()->detach();
 
@@ -101,12 +113,12 @@ class MovieRepository implements RepositoryInterface
     }
 
     // Remove existing file
-    private function removePoster($record, $sync = false) {
-        if($record->image) {
-            Storage::disk('public')->delete($record->image);
+    private function removePoster($path, $sync = false) {
+        if($path) {
+            Storage::disk($this->posterDisk)->delete($path);
         }
 
-        if($sync)
+        if($path && $sync)
             $record->update([
                 'image' => null
             ]);
@@ -114,13 +126,15 @@ class MovieRepository implements RepositoryInterface
 
     // Save and sync movie poster
     private function savePoster($record, $file) {
+        $filename = $this->posterName($record, $file->getClientOriginalExtension());
+
         $image_path = $file->storeAs(
-            'posters', // folder
-            $record->id . '-' . time() . '.' . $file->getClientOriginalExtension(), // name
-            'public' // disk
+            $this->posterFolder, // folder
+            $filename, // name
+            $this->posterDisk // disk
         );
 
-        $path = Storage::disk('public')->path($image_path);
+        $path = $this->posterPath($filename);
 
         //make Intervention Image instance and resize to specific pixel
         $resized_image = Image::make($path)->fit(230, 310);
@@ -130,8 +144,48 @@ class MovieRepository implements RepositoryInterface
         $resized_image->save();  
 
         $record->update([
-            'image' => $image_path
+            'image' => $this->posterFolder . '/' . $filename
         ]);
+    }
+
+    private function downloadUrlImage($record, $url) {
+        //Get the file
+        $image_content = @file_get_contents($url);
+
+        if($image_content === false)
+            return false;
+
+        $extension = pathinfo($url, PATHINFO_EXTENSION) ?: 'jpg';
+        $filename = $this->posterName($record, $extension);
+        $image_path = $this->posterPath($filename);
+
+        //Store in the filesystem.
+        $fp = fopen($image_path, "w");
+        fwrite($fp, $image_content);
+        fclose($fp);
+
+        try {
+            $img = Image::make($image_path);
+        } catch (\Exception $e) {
+            $this->removePoster($this->posterFolder . '/' . $filename);
+            return false;
+        }
+
+        //make Intervention Image instance and resize to specific pixel
+        $resized_image = $img->fit(230, 310);
+        $resized_image->save();
+
+        $record->update([
+            'image' => $this->posterFolder . '/' . $filename
+        ]);
+    }
+
+    private function posterName($record, $extension) {
+        return $record->id . '-' . time() . '.' . $extension;
+    }
+
+    private function posterPath($filename) {
+        return Storage::disk($this->posterDisk)->path($this->posterFolder . '/' . $filename);
     }
 
     // Get movies according to parameters

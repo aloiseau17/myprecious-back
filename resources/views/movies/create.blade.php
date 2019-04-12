@@ -190,6 +190,23 @@
 					@endif
 				</div>
 
+				{{-- ================= MOVIE IMAGE URL ================= --}}
+				<div class="form-group">
+					{{ Form::label('poster_link', __('app.movie_image_link')), [
+						'aria-describedby' => 'ImageLinkHelp',
+					] }}
+					<small id="ImageLinkHelp" class="form-text text-muted">{{ __('app.movie_image_link_helper') }}</small>
+					{{ Form::text('poster_link', null, [
+						'class' => 'form-control'
+					]) }}
+
+					@if($errors->has('poster_link'))
+						<small id="passwordHelpBlock" class="form-text text-danger">
+    						{{ $errors->first('poster_link') }}						  
+						</small>
+					@endif
+				</div>
+
 				{{-- ================= FORM SUBMIT ================= --}}
 				<a href="{{ route('movies.index') }}" class="btn btn-secondary">
 					{{ __('app.cancel') }}

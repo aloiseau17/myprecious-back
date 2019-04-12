@@ -44,6 +44,8 @@ return [
     'movie_edit_success' => 'Movie updated successfully',
     'movie_filter' => 'Recherche des films',
     'movie_image' => 'Image',
+    'movie_image_link' => 'Image link',
+    'movie_image_link_helper' => 'If an image file is given, this field will be ignored',
     'movie_remove_image' => 'Remove current image',
     'movie_list_seen' => 'Seen movies list',
     'movie_list_to_see' => 'Movies to seen list',
