@@ -34,7 +34,7 @@ class MovieRequest extends FormRequest
             'rating' => ['required', 'string', new RatingValues],
             'seen' => 'boolean',
             'possession_state' => ['required', 'string', new PossessionStateValues],
-            'file' => 'nullable|image',
+            'file' => 'nullable|image|dimensions:min_width=230,min_height=310',
             'file_remove' => 'nullable|boolean',
         ];
     }

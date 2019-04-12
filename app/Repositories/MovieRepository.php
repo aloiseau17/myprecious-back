@@ -5,6 +5,7 @@ use App\Movie;
 
 // Helpers
 use Illuminate\Support\Facades\Storage;
+use Image;
 
 class MovieRepository implements RepositoryInterface
 {
@@ -115,9 +116,18 @@ class MovieRepository implements RepositoryInterface
     private function savePoster($record, $file) {
         $image_path = $file->storeAs(
             'posters', // folder
-            $record->id . '.' . $file->getClientOriginalExtension(), // name
+            $record->id . '-' . time() . '.' . $file->getClientOriginalExtension(), // name
             'public' // disk
         );
+
+        $path = Storage::disk('public')->path($image_path);
+
+        //make Intervention Image instance and resize to specific pixel
+        $resized_image = Image::make($path)->fit(230, 310);
+
+        //save the image with new sizes by replacing the existing sl- prefix file
+        //but this save method would not be require in this case
+        $resized_image->save();  
 
         $record->update([
             'image' => $image_path
