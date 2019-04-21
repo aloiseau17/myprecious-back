@@ -68,7 +68,7 @@ class MovieController extends Controller
         }
 
         // store types
-        if($request->types)
+        if(isset($request->types))
         {
             $request['types'] = $this->manage_movie_types($request->types);
         }
@@ -126,7 +126,7 @@ class MovieController extends Controller
         }
 
         // store types
-        if($request->types)
+        if(isset($request->types))
         {
             $request['types'] = $this->manage_movie_types($request->types);
         }

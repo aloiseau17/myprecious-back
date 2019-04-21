@@ -48,9 +48,8 @@ class ApiMovieController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(MovieRequest $reqeust)
+    public function store(MovieRequest $request)
     {
-
         // manage director
         if($request->director)
         {
@@ -58,7 +57,7 @@ class ApiMovieController extends Controller
         }
 
         // store types
-        if($request->types)
+        if(isset($request->types))
         {
             $request['types'] = $this->manage_movie_types($request->types);
         }
@@ -89,6 +88,9 @@ class ApiMovieController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Movie  $movie
      * @return \Illuminate\Http\Response
+     *
+     * to make it work with patch method use _method = patch magic parameter and send as POST
+     * PHP issue https://github.com/laravel/framework/issues/13457#issuecomment-455570274
      */
     public function update(MovieRequest $request, Movie $movie)
     {
@@ -102,7 +104,7 @@ class ApiMovieController extends Controller
         }
 
         // store types
-        if($request->types)
+        if(isset($request->types))
         {
             $request['types'] = $this->manage_movie_types($request->types);
         }

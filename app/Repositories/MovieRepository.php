@@ -29,11 +29,12 @@ class MovieRepository implements RepositoryInterface
     // create a new record in the database
     public function create(array $data)
     {
+        $data = $this->sanitizeData($data);
 
         $movie = $this->movie->create($data);
 
         // Attach types list to movie via pivot table
-        if($data['types']) {
+        if(isset($data['types'])) {
 
             $movie->types()->attach($data['types']);
 
@@ -56,11 +57,13 @@ class MovieRepository implements RepositoryInterface
     // update record in the database
     public function update(array $data, $id)
     {
+        $data = $this->sanitizeData($data);
+
         $record = $this->movie->find($id);
 
-        if(isset($data['file']) || isset($data['file_remove'])) {
+        if(isset($data['file']) || isset($data['file_remove']) || isset($data['poster_link'])) {
             // remove old file if exist with other extension
-            $this->removePoster($record->image, isset($data['file_remove']));
+            $this->removePoster($record->image, $record, isset($data['file_remove']));
         }
 
         // If new file
@@ -77,7 +80,10 @@ class MovieRepository implements RepositoryInterface
         $status = $record->update($data);
 
         // Attach types list to movie via pivot table
-        $record->types()->sync($data['types']);
+        if(isset($request->types))
+        {
+            $record->types()->sync($data['types']);
+        }
 
         return $status;
     }
@@ -113,12 +119,12 @@ class MovieRepository implements RepositoryInterface
     }
 
     // Remove existing file
-    private function removePoster($path, $sync = false) {
+    private function removePoster($path, $record = null, $sync = false) {
         if($path) {
             Storage::disk($this->posterDisk)->delete($path);
         }
 
-        if($path && $sync)
+        if($path && $record && $sync)
             $record->update([
                 'image' => null
             ]);
@@ -186,6 +192,19 @@ class MovieRepository implements RepositoryInterface
 
     private function posterPath($filename) {
         return Storage::disk($this->posterDisk)->path($this->posterFolder . '/' . $filename);
+    }
+
+    private function sanitizeData(array $data)
+    {
+        // Sanitize seen attribut
+        if(isset($data['seen']))
+            $data['seen'] = ($data['seen'] == 'true') ? true : false;
+
+        // Sanitize file_remove attribut
+        if(isset($data['file_remove']))
+            $data['file_remove'] = ($data['file_remove'] == 'true') ? true : false;
+        
+        return $data;
     }
 
     // Get movies according to parameters
