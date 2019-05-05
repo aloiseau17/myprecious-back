@@ -154,9 +154,27 @@ class MovieRepository implements RepositoryInterface
         ]);
     }
 
+    private function loadFile($url) {
+        $http = new \GuzzleHttp\Client;
+
+        try {
+
+            $response = $http->get($url, [
+                'headers'        => ['content-type' => 'image/*'],
+            ]);
+
+            return $response->getBody();
+
+        } catch (\GuzzleHttp\Exception\BadResponseException $e) {
+
+            return false;
+
+        }
+    }
+
     private function downloadUrlImage($record, $url) {
         //Get the file
-        $image_content = @file_get_contents($url);
+        $image_content = $this->loadFile($url);
 
         if($image_content === false)
             return false;
