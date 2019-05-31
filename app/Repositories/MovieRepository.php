@@ -216,7 +216,7 @@ class MovieRepository implements RepositoryInterface
     {
         // Sanitize seen attribut
         if(isset($data['seen']))
-            $data['seen'] = ($data['seen'] == 'true') ? true : false;
+            $data['seen'] = ($data['seen'] == 'true' || $data['seen'] == '1') ? true : false;
 
         // Sanitize file_remove attribut
         if(isset($data['file_remove']))
@@ -240,7 +240,7 @@ class MovieRepository implements RepositoryInterface
      * rating : movies.rating
      * seen : movie.seen
      * random : get random movie (used only if you require on page)
-     * type : types.name
+     * types : types.name
      **/
     public function find($inputs)
     {
@@ -256,7 +256,7 @@ class MovieRepository implements RepositoryInterface
             "rating"            => null,
             "seen"              => null,
             "random"            => false,
-            "type"              => null,
+            "types"             => null,
         );
         
         // Apply defaut to undefined keys
@@ -273,9 +273,9 @@ class MovieRepository implements RepositoryInterface
                 $seenState = $inputs['seen'] == "1" ? 1 : 0;
                 return $query->where('seen', '=', $seenState);
             })
-            ->when($inputs['type'], function ($query, $type) {
-                return $query->whereHas('types', function ($query) use ($type) {
-                    $query->where('name', 'like', '%' . $type . '%');
+            ->when($inputs['types'], function ($query, $types) {
+                return $query->whereHas('types', function ($query) use ($types) {
+                    $query->where('name', 'like', '%' . $types . '%');
                 });
             })
             ->when($inputs['director'], function ($query, $director) {
