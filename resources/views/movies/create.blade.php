@@ -46,6 +46,34 @@
 					@endif
 				</div>
 
+				{{-- ================= MOVIE ACTOR ================= --}}
+				<div class="form-group">
+					{{ Form::label('actor', __('app.movie_actor')) }}
+					{{ Form::text('actor', null, [
+						'class' => 'form-control'
+					]) }}
+
+					@if($errors->has('actor'))
+						<small id="passwordHelpBlock" class="form-text text-danger">
+    						{{ $errors->first('actor') }}						  
+						</small>
+					@endif
+				</div>
+
+				{{-- ================= MOVIE DURATION ================= --}}
+				<div class="form-group">
+					{{ Form::label('duration', __('app.movie_duration')) }}
+					{{ Form::number('duration', null, [
+						'class' => 'form-control'
+					]) }}
+
+					@if($errors->has('duration'))
+						<small id="passwordHelpBlock" class="form-text text-danger">
+    						{{ $errors->first('duration') }}						  
+						</small>
+					@endif
+				</div>
+
 				{{-- ================= MOVIE TYPE ================= --}}
 				<div class="form-group">
 					{{ Form::label('types', __('app.movie_type')), [

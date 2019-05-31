@@ -38,6 +38,8 @@ class MovieRequest extends FormRequest
             'poster_link' => 'nullable|url',
             'file_remove' => 'nullable|in:true,false',
             'file' => 'nullable|image|dimensions:min_width=230,min_height=310',
+            'actor' => 'nullable|string',
+            'duration' => 'nullable|integer',
         ];
     }
 }

@@ -21,6 +21,8 @@ class CreateMoviesTable extends Migration
             $table->string('rating')->nullable(); // "fantastic", "bad", null
             $table->string('possession_state')->nullable(); // "own" / "to_own" / null
             $table->string('image')->nullable();
+            $table->string('actor')->nullable();
+            $table->integer('duration')->nullable();
             $table->timestamps();
         });
     }

@@ -19,6 +19,8 @@ class Movie extends Model
         'possession_state',
         'seen',
         'image',
+        'actor',
+        'duration',
     ];
 
     /**
