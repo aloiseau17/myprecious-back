@@ -126,7 +126,6 @@ class AuthController extends Controller
      * @param  [string] url
      * @return [string] message
      */
-    //TODO https://medium.com/modulr/api-rest-with-laravel-5-6-passport-authentication-reset-password-part-4-50d27455dcca
     public function linkEmail(Request $request)
     {
         $request->validate([
