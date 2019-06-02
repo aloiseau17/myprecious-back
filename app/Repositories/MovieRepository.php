@@ -165,6 +165,10 @@ class MovieRepository implements RepositoryInterface
 
             return $response->getBody();
 
+        } catch (\GuzzleHttp\Exception\RequestException $e) {
+
+            return false;
+
         } catch (\GuzzleHttp\Exception\BadResponseException $e) {
 
             return false;
@@ -173,6 +177,7 @@ class MovieRepository implements RepositoryInterface
     }
 
     private function downloadUrlImage($record, $url) {
+
         //Get the file
         $image_content = $this->loadFile($url);
 
