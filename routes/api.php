@@ -31,5 +31,7 @@ Route::middleware('auth:api')->group(function () {
 
 Route::post('/login', 'AuthController@login');
 Route::post('/register', 'AuthController@register');
+Route::post('/password/email', 'AuthController@linkEmail');
+Route::post('/password/reset', 'AuthController@reset');
 Route::middleware('auth:api')->post('/logout', 'AuthController@logout');
 Route::post('/refresh-login', 'AuthController@refreshToken');
