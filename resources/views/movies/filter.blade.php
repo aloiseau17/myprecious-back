@@ -20,7 +20,7 @@
 				@foreach($movies as $movie)
 					<li>
 						<p>
-							{{ $movie->title }}
+							{{ $movie->title }} - (id : {{ $movie->id }})
 							<br>
 							director: {{ $movie->director->name }}
 							<br>

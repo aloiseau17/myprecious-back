@@ -94,7 +94,7 @@ class AuthController extends Controller
 
         try {
 
-            $response = $http->post('http://myprecious.local:8080/oauth/token', [
+            $response = $http->post(config('services.passport.login_endpoint'), [
                 'form_params' => [
                     'grant_type' => 'refresh_token',
                     'refresh_token' => $request->refresh_token,

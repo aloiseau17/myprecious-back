@@ -13,7 +13,7 @@ return [
     */
     // TODO restreindre au maximum
     'supportsCredentials' => false,
-    'allowedOrigins' => ['*'],
+    'allowedOrigins' => explode(";", env('APP_URL_ALLOW_ORIGIN', '*')),
     'allowedOriginsPatterns' => [],
     'allowedHeaders' => ['*'],
     'allowedMethods' => ['*'],
