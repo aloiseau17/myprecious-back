@@ -25,7 +25,7 @@ class UserOptionsRepository
                 'list_order' => $data['list_order'],
                 'list_order_by' => $data['list_order_by']
             ]);
-
+            
         return $record;
     }
 

@@ -80,7 +80,7 @@ class MovieRepository implements RepositoryInterface
         $status = $record->update($data);
 
         // Attach types list to movie via pivot table
-        if(isset($request->types))
+        if(isset($data['types']))
         {
             $record->types()->sync($data['types']);
         }
