@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 // Laravel utilities
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
+use Illuminate\Support\Facades\Route;
 
 // Models
 use App\User;
@@ -26,41 +27,36 @@ class AuthController extends Controller
 {
 
     use SendsPasswordResetEmails;
-     
+
     public function __construct(UserRepository $user) {
-        
+
         $this->userRepo = $user;
 
     }
 
     public function login(Request $request)
     {
-    	$http = new \GuzzleHttp\Client;
+        $tokenRequest = Request::create('/oauth/token', 'POST', [
+            'grant_type' => 'password',
+            'client_id' => config('services.passport.client_id'),
+            'client_secret' => config('services.passport.client_secret'),
+            'username' => $request->username,
+            'password' => $request->password,
+        ]);
+        $tokenResult = app()->handle($tokenRequest);
 
-    	try {
+        switch ($tokenResult->status()) {
+            case 200:
+                return $tokenResult;
 
-            $response = $http->post(config('services.passport.login_endpoint'), [
-                'form_params' => [
-                    'grant_type' => 'password',
-                    'client_id' => config('services.passport.client_id'),
-                    'client_secret' => config('services.passport.client_secret'),
-                    'username' => $request->username,
-                    'password' => $request->password,
-                ]
-            ]);
+            case 400:
+                return response()->json('Invalid Request. Please enter a username or a password.', $tokenResult->status());
 
-            return $response->getBody();
+            case 401:
+                return response()->json('Your credentials are incorrect. Please try again', $tokenResult->status());
 
-        } catch (\GuzzleHttp\Exception\BadResponseException $e) {
-
-            if ($e->getCode() === 400) {
-                return response()->json('Invalid Request. Please enter a username or a password.', $e->getCode());
-            } else if ($e->getCode() === 401) {
-                return response()->json('Your credentials are incorrect. Please try again', $e->getCode());
-            }
-
-            return response()->json('Something went wrong on the server.', $e->getCode());
-
+            default:
+                return response()->json('Something went wrong on the server.', $tokenResult->status());
         }
     }
 
@@ -90,32 +86,27 @@ class AuthController extends Controller
 
     public function refreshToken(Request $request)
     {
-        $http = new \GuzzleHttp\Client;
+        $refreshTokenRequest = Request::create('/oauth/token', 'POST', [
+            'grant_type' => 'refresh_token',
+            'refresh_token' => $request->refresh_token,
+            'client_id' => config('services.passport.client_id'),
+            'client_secret' => config('services.passport.client_secret'),
+            'scope' => ''
+        ]);
+        $refreshTokenResult = app()->handle($refreshTokenRequest);
 
-        try {
+        switch ($refreshTokenResult->status()) {
+            case 200:
+                return $refreshTokenResult;
 
-            $response = $http->post(config('services.passport.login_endpoint'), [
-                'form_params' => [
-                    'grant_type' => 'refresh_token',
-                    'refresh_token' => $request->refresh_token,
-                    'client_id' => config('services.passport.client_id'),
-                    'client_secret' => config('services.passport.client_secret'),
-                    'scope' => ''
-                ]
-            ]);
+            case 400:
+                return response()->json('Invalid Request. Please enter a username or a password.', $refreshTokenResult->status());
 
-            return $response->getBody();
+            case 401:
+                return response()->json('Your credentials are incorrect. Please try again', $refreshTokenResult->status());
 
-        } catch (\GuzzleHttp\Exception\BadResponseException $e) {
-
-            if ($e->getCode() === 400) {
-                return response()->json('Invalid Request. Please enter a username or a password.', $e->getCode());
-            } else if ($e->getCode() === 401) {
-                return response()->json('Your credentials are incorrect. Please try again', $e->getCode());
-            }
-
-            return response()->json('Something went wrong on the server.', $e->getCode());
-
+            default:
+                return response()->json('Something went wrong on the server.', $refreshTokenResult->status());
         }
     }
 
