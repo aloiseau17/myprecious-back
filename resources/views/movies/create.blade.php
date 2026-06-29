@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-	
+
 	<div class="row">
 		<div class="col-12">
 			<h1>@lang('app.movie_add')</h1>
@@ -11,82 +11,69 @@
 
 	<div class="row">
 		<div class="col-12">
-			{!! Form::open([
-				'url' => route('movies.store'),
-				'method' => 'POST',
-				'files' => true,
-			]) !!}
-				
+			{{ Form::form()
+				->action(route('movies.store'))
+				->method('POST')
+				->acceptsFiles()
+				->open() }}
+
 				{{-- ================= MOVIE TITLE ================= --}}
 				<div class="form-group">
-					{{ Form::label('title', __('app.movie_title')) }}
-					{{ Form::text('title', null, [
-						'required',
-						'class' => 'form-control'
-					]) }}
+					{{ html()->label(__('app.movie_title'))->for('title') }}
+					{{ html()->input('text', 'title')->attribute('class', 'form-control')->attributeIf(true, 'required') }}
 
 					@if($errors->has('title'))
 						<small id="passwordHelpBlock" class="form-text text-danger">
-    						{{ $errors->first('title') }}						  
+    						{{ $errors->first('title') }}
 						</small>
 					@endif
 				</div>
 
 				{{-- ================= MOVIE DIRECTOR ================= --}}
 				<div class="form-group">
-					{{ Form::label('director', __('app.movie_director')) }}
-					{{ Form::text('director', null, [
-						'class' => 'form-control'
-					]) }}
+					{{ html()->label(__('app.movie_director'))->for('director') }}
+					{{ html()->input('text', 'director')->attribute('class', 'form-control') }}
 
 					@if($errors->has('director'))
 						<small id="passwordHelpBlock" class="form-text text-danger">
-    						{{ $errors->first('director') }}						  
+    						{{ $errors->first('director') }}
 						</small>
 					@endif
 				</div>
 
 				{{-- ================= MOVIE ACTOR ================= --}}
 				<div class="form-group">
-					{{ Form::label('actor', __('app.movie_actor')) }}
-					{{ Form::text('actor', null, [
-						'class' => 'form-control'
-					]) }}
+					{{ html()->label(__('app.movie_actor'))->for('actor') }}
+					{{ html()->input('text', 'actor')->attribute('class', 'form-control') }}
 
 					@if($errors->has('actor'))
 						<small id="passwordHelpBlock" class="form-text text-danger">
-    						{{ $errors->first('actor') }}						  
+    						{{ $errors->first('actor') }}
 						</small>
 					@endif
 				</div>
 
 				{{-- ================= MOVIE DURATION ================= --}}
 				<div class="form-group">
-					{{ Form::label('duration', __('app.movie_duration')) }}
-					{{ Form::number('duration', null, [
-						'class' => 'form-control'
-					]) }}
+					{{ html()->label(__('app.movie_duration'))->for('duration') }}
+					{{ html()->input('number', 'duration')->attribute('class', 'form-control') }}
 
 					@if($errors->has('duration'))
 						<small id="passwordHelpBlock" class="form-text text-danger">
-    						{{ $errors->first('duration') }}						  
+    						{{ $errors->first('duration') }}
 						</small>
 					@endif
 				</div>
 
 				{{-- ================= MOVIE TYPE ================= --}}
 				<div class="form-group">
-					{{ Form::label('types', __('app.movie_type')), [
-						'aria-describedby' => 'typesHelp',
-					] }}
+					{{ html()->label(__('app.movie_type'))->for('types')->attribute('aria-describedby', 'typesHelp') }}
 					<small id="typesHelp" class="form-text text-muted">{{ __('app.movie_type_helper') }}</small>
-					{{ Form::text('types', null, [
-						'class' => 'form-control'
-					]) }}
+					{{ html()->input('text', 'types')->attribute('class', 'form-control') }}
 
 					@if($errors->has('types'))
 						<small id="passwordHelpBlock" class="form-text text-danger">
-    						{{ $errors->first('types') }}						  
+    						{{ $errors->first('types') }}
 						</small>
 					@endif
 				</div>
@@ -95,68 +82,47 @@
 				<div class="form-group">
 					{{-- Seen --}}
 					<div class="form-check">
-						{{ Form::radio('seen', 1, false, [
-							'id' => 'seen',
-							'class' => 'form-check-input',
-						]) }}
-						{{ Form::label('seen', __('app.movie_seen')) }}
+						{{ html()->input('radio', 'seen')->attribute('value', 1)->attribute('id', 'seen')->attribute('class', 'form-check-input') }}
+						{{ html()->label(__('app.movie_seen'))->for('seen') }}
 					</div>
 
 					{{-- Unseen --}}
 					<div class="form-check">
-						{{ Form::radio('seen', 0, true, [
-							'id' => 'unseen',
-							'class' => 'form-check-input',
-						]) }}
-						{{ Form::label('unseen', __('app.movie_unseen')) }}
+						{{ html()->input('radio', 'seen')->attribute('value', 0)->attribute('id', 'unseen')->attribute('class', 'form-check-input')->attribute('checked', 'checked') }}
+						{{ html()->label(__('app.movie_unseen'))->for('unseen') }}
 					</div>
 
 					@if($errors->has('seen'))
 						<small id="passwordHelpBlock" class="form-text text-danger">
-    						{{ $errors->first('seen') }}						  
+    						{{ $errors->first('seen') }}
 						</small>
 					@endif
 				</div>
 
 				{{-- ================= MOVIE RATING ================= --}}
 				<div class="form-group">
-					
+
 					{{-- Do not know --}}
 					<div class="form-check">
-						{{ Form::radio('rating', 'empty', true, [
-							'id' => 'ratingDoNotKnow',
-							'class' => 'form-check-input',
-						])}}
-						{{ Form::label('ratingDoNotKnow', __('app.movie_rating_do_not_know'), [
-							'class' => 'form-check-label',
-						]) }}
+						{{ html()->input('radio', 'rating')->attribute('value', 'empty')->attribute('id', 'ratingDoNotKnow')->attribute('class', 'form-check-input')->attribute('checked', 'checked') }}
+						{{ html()->label(__('app.movie_rating_do_not_know'))->for('ratingDoNotKnow')->attribute('class', 'form-check-label') }}
 					</div>
-					
+
 					{{-- Fantastic --}}
 					<div class="form-check">
-						{{ Form::radio('rating', "fantastic", false, [
-							'id' => 'ratingFantastic',
-							'class' => 'form-check-input',
-						])}}
-						{{ Form::label('ratingFantastic', __('app.movie_rating_fantastic'), [
-							'class' => 'form-check-label',
-						]) }}
+						{{ html()->input('radio', 'rating')->attribute('value', 'fantastic')->attribute('id', 'ratingFantastic')->attribute('class', 'form-check-input') }}
+						{{ html()->label(__('app.movie_rating_fantastic'))->for('ratingFantastic')->attribute('class', 'form-check-label') }}
 					</div>
 
 					{{-- Bad --}}
 					<div class="form-check">
-						{{ Form::radio('rating', "bad", false, [
-							'id' => 'ratingBad',
-							'class' => 'form-check-input',
-						])}}
-						{{ Form::label('ratingBad', __('app.movie_rating_bad'), [
-							'class' => 'form-check-label',
-						]) }}
+						{{ html()->input('radio', 'rating')->attribute('value', 'bad')->attribute('id', 'ratingBad')->attribute('class', 'form-check-input') }}
+						{{ html()->label(__('app.movie_rating_bad'))->for('ratingBad')->attribute('class', 'form-check-label') }}
 					</div>
 
 					@if($errors->has('rating'))
 						<small id="passwordHelpBlock" class="form-text text-danger">
-    						{{ $errors->first('rating') }}						  
+    						{{ $errors->first('rating') }}
 						</small>
 					@endif
 				</div>
@@ -166,71 +132,50 @@
 
 					{{-- Default --}}
 					<div class="form-check">
-						{{ Form::radio('possession_state', 'empty', true, [
-							'id' => 'stateDefault',
-							'class' => 'form-check-input',
-						])}}
-						{{ Form::label('stateDefault', __('app.movie_possession_state_default'), [
-							'class' => 'form-check-label',
-						]) }}
+						{{ html()->input('radio', 'possession_state')->attribute('value', 'empty')->attribute('id', 'stateDefault')->attribute('class', 'form-check-input')->attribute('checked', 'checked') }}
+						{{ html()->label(__('app.movie_possession_state_default'))->for('stateDefault')->attribute('class', 'form-check-label') }}
 					</div>
 
 					{{-- Own --}}
 					<div class="form-check">
-						{{ Form::radio('possession_state', "own", false, [
-							'id' => 'stateOwn',
-							'class' => 'form-check-input',
-						])}}
-						{{ Form::label('stateOwn', __('app.movie_possession_state_own'), [
-							'class' => 'form-check-label',
-						]) }}
+						{{ html()->input('radio', 'possession_state')->attribute('value', 'own')->attribute('id', 'stateOwn')->attribute('class', 'form-check-input') }}
+						{{ html()->label(__('app.movie_possession_state_own'))->for('stateOwn')->attribute('class', 'form-check-label') }}
 					</div>
 
 					{{-- To own --}}
 					<div class="form-check">
-						{{ Form::radio('possession_state', "to_own", false, [
-							'id' => 'stateToOwn',
-							'class' => 'form-check-input',
-						])}}
-						{{ Form::label('stateToOwn', __('app.movie_possession_state_to_own'), [
-							'class' => 'form-check-label',
-						]) }}
+						{{ html()->input('radio', 'possession_state')->attribute('value', 'to_own')->attribute('id', 'stateToOwn')->attribute('class', 'form-check-input') }}
+						{{ html()->label(__('app.movie_possession_state_to_own'))->for('stateToOwn')->attribute('class', 'form-check-label') }}
 					</div>
 
 					@if($errors->has('possession_state'))
 						<small id="passwordHelpBlock" class="form-text text-danger">
-    						{{ $errors->first('possession_state') }}						  
+    						{{ $errors->first('possession_state') }}
 						</small>
 					@endif
 				</div>
 
 				{{-- ================= MOVIE IMAGE ================= --}}
 				<div class="form-group">
-					{{ Form::label('file', __('app.movie_image')) }}
-					{{ Form::file('file', null, [
-						'class' => 'form-control'
-					]) }}
+					{{ html()->label(__('app.movie_image'))->for('file') }}
+					{{ html()->input('file', 'file')->attribute('class', 'form-control') }}
 
 					@if($errors->has('file'))
 						<small id="passwordHelpBlock" class="form-text text-danger">
-    						{{ $errors->first('file') }}						  
+    						{{ $errors->first('file') }}
 						</small>
 					@endif
 				</div>
 
 				{{-- ================= MOVIE IMAGE URL ================= --}}
 				<div class="form-group">
-					{{ Form::label('poster_link', __('app.movie_image_link')), [
-						'aria-describedby' => 'ImageLinkHelp',
-					] }}
+					{{ html()->label(__('app.movie_image_link'))->for('poster_link')->attribute('aria-describedby', 'ImageLinkHelp') }}
 					<small id="ImageLinkHelp" class="form-text text-muted">{{ __('app.movie_image_link_helper') }}</small>
-					{{ Form::text('poster_link', null, [
-						'class' => 'form-control'
-					]) }}
+					{{ html()->input('text', 'poster_link')->attribute('class', 'form-control') }}
 
 					@if($errors->has('poster_link'))
 						<small id="passwordHelpBlock" class="form-text text-danger">
-    						{{ $errors->first('poster_link') }}						  
+    						{{ $errors->first('poster_link') }}
 						</small>
 					@endif
 				</div>
@@ -239,11 +184,9 @@
 				<a href="{{ route('movies.index') }}" class="btn btn-secondary">
 					{{ __('app.cancel') }}
 				</a>
-				{{ Form::submit( __('app.save'), [
-					'class' => 'btn btn-primary',
-				])}}
+				{{ html()->input('submit', null)->attribute('value', __('app.save'))->attribute('class', 'btn btn-primary') }}
 
-			{!! Form::close() !!}
+			{{ Form::form()->close() }}
 		</div>
 	</div>
 

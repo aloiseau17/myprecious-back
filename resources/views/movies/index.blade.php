@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-	
+
 	<div class="row">
 		<div class="col-12">
 			<h1>@lang('app.movie_list_seen')</h1>
@@ -16,7 +16,7 @@
 		@endif
 	</div>
 
-	
+
 	<div class="row">
 		<div class="col-12">
 			<ul>
@@ -27,23 +27,22 @@
 						@endif
 
 						{{ $movie->title }}
-						
+
 						{{-- ================= EDIT BUTTON ================= --}}
 						<a href="{{ route('movies.edit', ['id' => $movie->id]) }}" class="d-inline-block btn btn-secondary btn-sm">{{ __('app.edit') }}</a>
-						
+
 						{{-- ================= DELETE FORM ================= --}}
-						{!! Form::open([
-							'url' => route('movies.destroy', ['id' => $movie->id]),
-							'method' => 'DELETE',
-							'class' => 'd-inline-block',
-						]) !!}
+						{{ Form::form()
+							->action(route('movies.destroy', ['id' => $movie->id]))
+							->method('POST')
+							->attribute('class', 'd-inline-block')
+							->open() }}
 
-							{{ Form::submit( 'X', [
-								'title' => __('app.delete'),
-								'class' => 'btn btn-danger btn-sm',
-							])}}
+							{{ html()->hidden('_method')->value('DELETE') }}
 
-						{!! Form::close() !!}
+							{{ html()->input('submit', null)->attribute('value', 'X')->attribute('title', __('app.delete'))->attribute('class', 'btn btn-danger btn-sm') }}
+
+						{{ Form::form()->close() }}
 					</li>
 				@endforeach
 			</ul>
